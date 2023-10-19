@@ -1,0 +1,162 @@
+{
+	"info": {
+		"_postman_id": "8ee725a9-5cd1-440a-b258-6047f6d63096",
+		"name": "React-Chat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30431427"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": []
+		},
+		{
+			"name": "Rooms",
+			"item": []
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Message View All In Room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/message/view-all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"message",
+								"view-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Message View All In Room Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"room\": \"placeholder\",\r\n    \"body\": \"test of time\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/message/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"message",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Message View All In Room Copy 2",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/message/delete/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"message",
+								"delete",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65318b8087b60ab2a66f9fd0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Message View All In Room Copy 3",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"body\": \"Updated\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/message/update/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"message",
+								"update",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6531944e86ddbc4a63fca67d"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
