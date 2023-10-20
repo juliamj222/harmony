@@ -57,4 +57,54 @@ router.post("/login", async (req, res) => {
     }
 });
 
+//- [ ] Add `update` and `delete` endpoints to your `users` controller
+// delete
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const conditions={
+      _id: id,
+    }
+    const user = await User.deleteOne({ _id: id });
+    console.log(user);
+    res.json({
+      message:
+        user.deletedCount === 1
+          ? "success user was deleted"
+          : "failure to delete user",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+// update
+
+router.patch("/update/:id",  async function (req, res) {
+  try {
+    const id = req.params.id;
+    const conditions = { _id: id};
+    const data = req.body;
+    const options = { new: true };
+    const user = await User.findOneAndUpdate(conditions, data, options);
+    console.log(user)
+
+    if (!user) {
+      throw new Error("User was not found");
+    }
+
+    res.json({
+      message: "success from update",
+      user: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+
 module.exports = router;
