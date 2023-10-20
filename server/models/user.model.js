@@ -15,7 +15,11 @@ const UserSchema=new mongoose.Schema({
     password: {
         type: String,
         required: true,
-      },
+    },
+    isAdmin: {
+        type: Boolean,
+        defaultValue: false,
+    }
 })
 
 module.exports = mongoose.model("User", UserSchema);

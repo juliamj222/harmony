@@ -6,12 +6,13 @@ const jwt = require("jsonwebtoken");
 //- [ ] Create user endpoint
 router.post("/register", async (req, res) => {
     try {
-      const { firstname, lastname, email, password } = req.body;
+      const { firstname, lastname, email, password, isAdmin } = req.body;
       const user = new User({
         firstname: firstname,
         lastname: lastname,
         email: email,
         password: bcrypt.hashSync(password, 10),
+        isAdmin: isAdmin,
 });
       const newUser = await user.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
@@ -55,5 +56,55 @@ router.post("/login", async (req, res) => {
       res.status(500).json({ message: error.message });
     }
 });
+
+//- [ ] Add `update` and `delete` endpoints to your `users` controller
+// delete
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const conditions={
+      _id: id,
+    }
+    const user = await User.deleteOne({ _id: id });
+    console.log(user);
+    res.json({
+      message:
+        user.deletedCount === 1
+          ? "success user was deleted"
+          : "failure to delete user",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+// update
+
+router.patch("/update/:id",  async function (req, res) {
+  try {
+    const id = req.params.id;
+    const conditions = { _id: id};
+    const data = req.body;
+    const options = { new: true };
+    const user = await User.findOneAndUpdate(conditions, data, options);
+    console.log(user)
+
+    if (!user) {
+      throw new Error("User was not found");
+    }
+
+    res.json({
+      message: "success from update",
+      user: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 
 module.exports = router;

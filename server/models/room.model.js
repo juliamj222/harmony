@@ -12,6 +12,14 @@ const RoomSchema = new mongoose.Schema({
   },
   addedUsers: {
     type: Array,
+  },
+  userId: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+  },
+  removeAddedUsers: {
+    type: Boolean,
+    defaultValue: false
   }
   });
 
