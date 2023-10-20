@@ -6,11 +6,11 @@ const validateSession = require("../middleware/validate-session");
 router.post("/add", validateSession, async (req, res) => {
   try {
     console.log(req.user);
-    const { name, description, addedUsers } = req.body;
+    const { name, description } = req.body;
     const room = new Room({
       name: name,
       description: description,
-      addedUsers: addedUsers,
+      addedUsers: req.user._id,
     });
 
     const newRoom = await room.save();

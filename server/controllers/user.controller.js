@@ -6,12 +6,13 @@ const jwt = require("jsonwebtoken");
 //- [ ] Create user endpoint
 router.post("/register", async (req, res) => {
     try {
-      const { firstname, lastname, email, password } = req.body;
+      const { firstname, lastname, email, password, isAdmin } = req.body;
       const user = new User({
         firstname: firstname,
         lastname: lastname,
         email: email,
         password: bcrypt.hashSync(password, 10),
+        isAdmin: isAdmin,
 });
       const newUser = await user.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
