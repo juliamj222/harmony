@@ -6,7 +6,6 @@ const validateSession = require("../middleware/validate-session");
 //- [ ] Create endpoint - user automatically becomes the addedUser, we can add more addedUsers with the array function
 router.post("/add", validateSession, async (req, res) => {
   try {
-    console.log(req.user);
     const { name, description, addedUsers, removeAddedUsers, userId } = req.body;
     const room = new Room({
       name: name,
@@ -49,10 +48,8 @@ router.delete("/delete/:id", validateSession, async (req, res) => {
         _id: id,
         userId: req.user._id,
       } 
-      console.log(req.user.isAdmin);
       if(req.user.isAdmin) {
       const room = await Room.deleteOne({ _id: id });
-      console.log(room);
       res.json({
         message:
           room.deletedCount === 1
@@ -61,7 +58,6 @@ router.delete("/delete/:id", validateSession, async (req, res) => {
       })}
       else {
         const room = await Room.deleteOne(conditions);
-        console.log(room);
         res.json({
           message:
             room.deletedCount === 1
@@ -82,11 +78,8 @@ router.patch("/update/:id", validateSession, getRoom, async function (req, res) 
   try {
     const id = req.params.id;
     const conditions = { _id: id, userId: req.user._id };
-    console.log(req.user._id);
-    console.log(req.room);
     const currentUser = req.room.addedUsers;
     let {addedUsers, name, description, removeAddedUsers}=req.body;
-    console.log(req.user.isAdmin);
     if(req.user.isAdmin) {
       if (removeAddedUsers) {
         addedUsers=currentUser.filter(user => !addedUsers.includes(user))

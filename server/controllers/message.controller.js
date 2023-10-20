@@ -16,18 +16,30 @@ router.post("/create/:id", validateSession, getRoom, async (req, res) => {
     try {
         const currentDate = new Date();
         const {body} = req.body
-        if (!req.room.addedUsers.includes(req.user._id)) {
-            throw new Error("You can't post messages to this room")
-        };
-        const message = new Message({
-            when: currentDate,
-            user: req.user._id,
-            room: req.room._id,
-            body,
-        });
-        
-        const newMessage = await message.save();
-        res.json({message: "Message Created Successfully", body: newMessage,})
+        if (req.user.isAdmin) {
+            const message = new Message({
+                when: currentDate,
+                user: req.user._id,
+                room: req.room._id,
+                body,
+            });
+            
+            const newMessage = await message.save();
+            res.json({message: "Message Created Successfully", body: newMessage,})
+        } else {
+            if (!req.room.addedUsers.includes(req.user._id)) {
+                throw new Error("You can't post messages to this room")
+            };
+            const message = new Message({
+                when: currentDate,
+                user: req.user._id,
+                room: req.room._id,
+                body,
+            });
+            
+            const newMessage = await message.save();
+            res.json({message: "Message Created Successfully", body: newMessage,})
+        }
     } catch (error) {
         res.status(500).json({message: error.Message});
     }
@@ -54,7 +66,7 @@ router.patch("/update/:id", validateSession, async (req, res) => {
             if (!message){
                 throw new Error("Message Could not be updated or not found");
             }
-            res.json({message: "Message Updated Successfully", Message: message})
+            res.json({message: message})
         }
     } catch (error) {
         res.status(500).json({message: error.Message});

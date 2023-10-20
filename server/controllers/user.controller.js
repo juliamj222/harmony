@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const validateSession = require("../middleware/validate-session");
 
 //- [ ] Create user endpoint
 router.post("/register", async (req, res) => {
@@ -59,20 +60,29 @@ router.post("/login", async (req, res) => {
 
 //- [ ] Add `update` and `delete` endpoints to your `users` controller
 // delete
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", validateSession, async (req, res) => {
   try {
     const id = req.params.id;
     const conditions={
       _id: id,
     }
-    const user = await User.deleteOne({ _id: id });
-    console.log(user);
+    if (req.user.isAdmin) {
+      const user = await User.deleteOne({_id: id});
     res.json({
       message:
         user.deletedCount === 1
           ? "success user was deleted"
           : "failure to delete user",
     });
+    } else {
+      const user = await User.deleteOne({_id: req.user._id});
+      res.json({
+        message:
+          user.deletedCount === 1
+            ? "success user was deleted"
+            : "failure to delete user",
+      });
+    }
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -82,23 +92,46 @@ router.delete("/delete/:id", async (req, res) => {
 
 // update
 
-router.patch("/update/:id",  async function (req, res) {
+router.patch("/update/:id", validateSession, async function (req, res) {
   try {
     const id = req.params.id;
-    const conditions = { _id: id};
-    const data = req.body;
-    const options = { new: true };
-    const user = await User.findOneAndUpdate(conditions, data, options);
-    console.log(user)
+    if (req.user.isAdmin) {
+      const conditions = {_id: id};
+      let {password, firstname, lastname, email, isAdmin} = req.body;
+      password = bcrypt.hashSync(password, 10)
+      const data = {
+        password,
+        firstname,
+        lastname,
+        email,
+        isAdmin,
+      }
+      const options = { new: true };
+      const user = await User.findOneAndUpdate(conditions, data, options);
 
-    if (!user) {
-      throw new Error("User was not found");
+      if (!user) {
+        throw new Error("User was not found");
+      }
+
+      res.json({
+        message: "success from update",
+        user: user,
+      });
+    } else {
+      const conditions = {_id: req.user._id};
+      const data = req.body;
+      const options = { new: true };
+      const user = await User.findOneAndUpdate(conditions, data, options);
+  
+      if (!user) {
+        throw new Error("User was not found");
+      }
+  
+      res.json({
+        message: "success from update",
+        user: user,
+      });
     }
-
-    res.json({
-      message: "success from update",
-      user: user,
-    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
