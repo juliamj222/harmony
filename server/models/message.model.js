@@ -14,6 +14,10 @@ const MessageSchema = new mongoose.Schema({
     body: {
         type: String,
         reqiure: true,
+    },
+    ownerId: {
+        type: mongoose.Types.ObjectId,
+        ref: "User"
     }
 })
 
