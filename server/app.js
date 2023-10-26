@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const messageController = require("./controllers/message.controller");
 const userController = require("./controllers/user.controller");
 const roomController = require("./controllers/room.controller");
@@ -17,6 +18,7 @@ db.once("open", () => {
     console.log("connected to the DB", DBName);
 });
 
+app.use(cors());
 app.use(express.json());
 
 app.use("/message", messageController);
