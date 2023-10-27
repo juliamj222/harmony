@@ -38,6 +38,43 @@
 					"response": []
 				},
 				{
+					"name": "User Register Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{JWT}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/user/get-all-users",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"user",
+								"get-all-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Signin",
 					"request": {
 						"method": "POST",
