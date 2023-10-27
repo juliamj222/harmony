@@ -1,7 +1,23 @@
 :root {
     --primary: #EF233C;
-    --secondary: #2B2D42;
+    --secondary: #8D99AE;
     --tritary: #EDF2F4;
-    --backgroundColor: #8D99AE;
+    --backgroundColor: #2B2D42;
     --buttonColor: #D90429;
+}
+
+.background {
+    background-color: var(--backgroundColor);
+}
+
+.button {
+    background-color: var(--buttonColor);
+    color: var(--tritary);
+    border: 1px solid var(--backgroundColor);
+    text-align: center;
+    padding: .5em;
+}
+
+.button:hover {
+    background-color: var(--primary);
 }
