@@ -7,10 +7,10 @@ const validateSession = require("../middleware/validate-session");
 //- [ ] Create user endpoint
 router.post("/register", async (req, res) => {
     try {
-      const { firstname, lastname, email, password, isAdmin } = req.body;
+      const { firstName, lastName, email, password, isAdmin } = req.body;
       const user = new User({
-        firstname: firstname,
-        lastname: lastname,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         password: bcrypt.hashSync(password, 10),
         isAdmin: isAdmin,
@@ -97,12 +97,12 @@ router.patch("/update/:id", validateSession, async function (req, res) {
     const id = req.params.id;
     if (req.user.isAdmin) {
       const conditions = {_id: id};
-      let {password, firstname, lastname, email, isAdmin} = req.body;
+      let {password, firstName, lastName, email, isAdmin} = req.body;
       password = bcrypt.hashSync(password, 10)
       const data = {
         password,
-        firstname,
-        lastname,
+        firstName,
+        lastName,
         email,
         isAdmin,
       }
