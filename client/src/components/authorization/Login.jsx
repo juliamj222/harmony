@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 
 function Login(props) {
-  const [email, setEmail] = useState("test2@test.com");
-  const [password, setPassword] = useState("password1234");
+  const [email, setEmail] = useState("admin1admin.com");
+  const [password, setPassword] = useState("admin");
 
   async function handleSubmit(evt) {
     try {
@@ -29,7 +29,8 @@ function Login(props) {
       // * Get a Response
       const data = await response.json();
       props.updateToken(data.token);
-      console.log(data)
+      props.updateCurrentId(data.user._id);
+      props.updateIsAdmin(data.user.isAdmin);
     } catch (error) {
       console.error(error);
     }
@@ -68,7 +69,7 @@ function Login(props) {
             {/* Form Group Password End */}
             {/* Buttons */}
             <div style={{display: "flex", justifyContent: "space-around"}}>
-              <button className="button rounded" onClick={props.handleSwicth}>Change to Signup</button>
+              <button className="button rounded" onClick={props.handleSwitch}>Change to Signup</button>
               <button className="button rounded" title="Login" onClick={handleSubmit}>
                 Login
               </button>

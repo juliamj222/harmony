@@ -148,4 +148,13 @@ router.get("/get-all-users", async function (req, res) {
   }
 });
 
+router.get("/get-user-by-id/:id", async function (req, res) {
+  try {
+    const user = await User.findById(req.params.id);
+    res.json({ message: "view all complete", user: user });
+  } catch (error) {
+    res.status(500).json({ message: error.Message });
+  }
+})
+
 module.exports = router;
