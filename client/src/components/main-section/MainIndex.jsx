@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from "reactstrap";
-/* import RoomCreate from "./RoomCreate"; */
 import RoomFeed from "./RoomFeed";
 import { API_ROOM_VIEW_ALL } from "../../constants/endpoints";
 import RoomCreate from "./RoomCreate";
-
 
 const MainIndex = (props) => {
     const [roomFeedItems, setRoomFeedItems] = useState([]);
@@ -28,6 +26,7 @@ const MainIndex = (props) => {
   setRoomFeedItems(data.rooms.reverse());
 } catch (error) {
   console.error(error)
+  props.updateToken(null)
 }
 }
 
@@ -35,25 +34,37 @@ const MainIndex = (props) => {
 useEffect(() => {
     //check to see if we have a token
     if (props.token==="") {
-        return
+
+    return
     }
     // exit clause
 fetchRoomFeed();
 }, [props.token]);
 console.log(props.token)
+
+const [roomFeed, setRoomFeed] = useState(true);
+        function handleSwitchRooms(evt) {
+            evt.preventDefault();
+            setRoomFeed(!roomFeed);
+        }
+
     return ( 
         <>
-    <Container className="mt-5">
+ {roomFeed ? (
+        <RoomCreate token={props.token} handleSwitchRooms={handleSwitchRooms} fetchRoomFeed={fetchRoomFeed}  />
+      ) : (
+        <RoomFeed token={props.token}                 RoomFeed roomFeedItems={roomFeedItems} handleSwitchRooms={handleSwitchRooms}  />
+      )}
+
+    {/* <Container className="mt-5">
         <Row>
             <Col md="4"><RoomCreate token={props.token} fetchRoomFeed={fetchRoomFeed}/></Col> 
             <Col md="8">
                 <RoomFeed roomFeedItems={roomFeedItems}/>
             </Col>
-
         </Row>
-        </Container>
+        </Container> */}
         </> 
         );
 }
-
 export default MainIndex;

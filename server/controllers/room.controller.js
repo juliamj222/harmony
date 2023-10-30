@@ -38,6 +38,25 @@ router.get("/view-all", validateSession, async (req, res) => {
   }
 });
 
+/* 
+Route: localhost:4000/room/view-by-id/:id
+Request Type: GET
+Description: View a room by its ID
+*/
+
+router.get("/view-by-id/:id", validateSession, async (req, res) => {
+  try {
+    const id= req.params.id;
+    const room = await Room.findById(id). populate("name", "description");
+ 
+    res.json({ message: "success from get", room: room });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 //- [ ] Add `update` and `delete` endpoints to your `rooms` controller
 
 // delete

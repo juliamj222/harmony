@@ -2,7 +2,6 @@ import { Form, FormGroup, Input, Label } from "reactstrap";
 import React, { useState } from 'react';
 import {API_ROOM_CREATE} from "../../constants/endpoints";
 
-
 function RoomCreate(props) {
 const [name, setName] = useState("");
 const [description, setDescription] = useState("");
@@ -32,7 +31,7 @@ const [description, setDescription] = useState("");
         const response=await fetch (API_ROOM_CREATE, requestOptions)
         //get a response
         const data=await response.json();
-        // refresh the pet feed
+        // refresh the room feed
         props.fetchRoomFeed();
         console.log(data);
     } catch (error) {
@@ -41,9 +40,9 @@ const [description, setDescription] = useState("");
   }
   return (
     <>
-      <div className="d-flex neutral-background rounded p-5 flex-column">
+      <div className="d-flex neutral-background rounded p-5 flex-column" style={{color: "var(--secondary)"}}>
         <h2 className="font-primary text-center">Create a Room Post</h2>
-        <Form>
+        <Form >
           {/* Name, Description */}
           {/* Form Group Name */}
           <FormGroup>
@@ -71,7 +70,12 @@ const [description, setDescription] = useState("");
             />
           </FormGroup>
           {/* Form Group Description End */}
-          <button onClick={handleSubmit}>Create Room</button>
+          {/* Buttons */}
+              <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <button className="button rounded" onClick={props.handleSwitchRooms}>Change to View Rooms</button>
+              <button className="button rounded" title="Signup" onClick={handleSubmit}>Create Room</button>
+              </div>
+              {/* Buttons End */}
         </Form>
       </div>
     </>

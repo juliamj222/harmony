@@ -5,16 +5,16 @@ import { useState } from "react";
 function Auth(props) {
   const [isLogin, setIsLogin] = useState(true);
 
-  function handleSwicth() {
+  function handleSwitch() {
     setIsLogin(!isLogin);
   }
 
   return (
     <>
       {isLogin ? (
-        <Login updateToken={props.updateToken} handleSwicth={handleSwicth} />
+        <Login updateToken={props.updateToken} handleSwitch={handleSwitch} />
       ) : (
-        <Signup updateToken={props.updateToken} handleSwicth={handleSwicth} />
+        <Signup updateToken={props.updateToken} handleSwitch={handleSwitch} />
       )}
     </>
   );

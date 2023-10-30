@@ -105,7 +105,7 @@ function Signup(props) {
             {/* Form Group LastName End */}
             {/* Buttons */}
             <div style={{ display: "flex", justifyContent: "space-around" }}>
-              <button className="button rounded" onClick={props.handleSwicth}>Change to Login</button>
+              <button className="button rounded" onClick={props.handleSwitch}>Change to Login</button>
               <button className="button rounded" title="Signup" onClick={handleSubmit}>
                 Signup
               </button>
