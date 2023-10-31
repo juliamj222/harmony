@@ -1,57 +1,87 @@
-import React, { useState } from "react";
-import { Form, FormGroup, Label, Input } from "reactstrap";
-import { API_USER_SIGNUP } from "../../constants/endpoints";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Form, FormGroup, Input, Label } from "reactstrap";
+import { API_GET_USER_BY_ID, API_UPDATE_USER } from "../../constants/endpoints";
 
-function Signup(props) {
+function UpdateUser(props) {
+  const params = useParams();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("password123");
-  const [firstName, setFirstName] = useState("Place");
-  const [lastName, setLastName] = useState("Holder");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
-  async function handleSubmit(evt) {
+  async function getUserById() {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    let requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+    };
+    console.log( API_GET_USER_BY_ID + params.id)
+    const response = await fetch(
+      API_GET_USER_BY_ID + params.id,
+      requestOptions
+    );
+    const data = await response.json();
+    console.log(data)
+    setEmail(data.user.email);
+    setFirstName(data.user.firstName);
+    setLastName(data.user.lastName);
+  }
+
+  async function handleUpdate(evt) {
     try {
       evt.preventDefault();
-      // * Headers
       let myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-      // * Body
-      const body = {
-        email,
-        password,
-        firstname: firstName,
-        lastname: lastName,
-        isAdmin: false,
-      };
-      // * Request Options
-      const requestOptions = {
-        method: "POST",
+      myHeaders.append("Authorization", props.token);
+
+      let body = {};
+      if (email !== "") {
+        body.email = email;
+      }
+      if (password !== "") {
+        body.password = password;
+      }
+      if (firstName !== "") {
+        body.firstName = firstName;
+      }
+      if (lastName !== "") {
+        body.lastName = lastName;
+      }
+
+      console.log(body);
+
+      let requestOptions = {
+        method: "PATCH",
         headers: myHeaders,
         body: JSON.stringify(body),
       };
-      // * Send Request
-      const response = await fetch(API_USER_SIGNUP, requestOptions);
 
-      // * Get a Response
-      const data = await response.json();
-      console.log(data);
-      if (data.token) {
-        props.updateToken(data.token);
-        props.updateCurrentId(data.user._id);
-        props.updateIsAdmin(data.user.isAdmin);
-      }
+      const response = await fetch(API_UPDATE_USER + params.id, requestOptions);
+      navigate("/view-users");
     } catch (error) {
       console.error(error);
     }
   }
+
+  useEffect(() => {
+    getUserById();
+  }, []);
 
   return (
     <>
       <div className="d-flex justify-content-center mt-5 h-auto">
         <div
           className="secondary-background p-5 rounded"
-          style={{ width: "450px", backgroundColor: "var(--secondary)", color: "var(--tritary)" }}
+          style={{
+            width: "450px",
+            backgroundColor: "var(--secondary)",
+            color: "var(--tritary)",
+          }}
         >
-          <h2 className="text-center">SIGNUP FORM</h2>
+          <h2 className="text-center">Update</h2>
           <Form>
             {/* Form group Email */}
             <FormGroup>
@@ -106,10 +136,13 @@ function Signup(props) {
             </FormGroup>
             {/* Form Group LastName End */}
             {/* Buttons */}
-            <div style={{ display: "flex", justifyContent: "space-around" }}>
-              <button className="button rounded" onClick={props.handleSwitch}>Change to Login</button>
-              <button className="button rounded" title="Signup" onClick={handleSubmit}>
-                Signup
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button
+                className="button rounded"
+                title="Update"
+                onClick={handleUpdate}
+              >
+                Update
               </button>
               {/* Buttons End */}
             </div>
@@ -120,4 +153,4 @@ function Signup(props) {
   );
 }
 
-export default Signup;
+export default UpdateUser;

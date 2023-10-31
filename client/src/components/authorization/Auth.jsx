@@ -12,9 +12,9 @@ function Auth(props) {
   return (
     <>
       {isLogin ? (
-        <Login updateToken={props.updateToken} handleSwitch={handleSwitch} />
+        <Login updateToken={props.updateToken} handleSwitch={handleSwitch} updateCurrentId={props.updateCurrentId} updateIsAdmin={props.updateIsAdmin}/>
       ) : (
-        <Signup updateToken={props.updateToken} handleSwitch={handleSwitch} />
+        <Signup updateToken={props.updateToken} handleSwitch={handleSwitch} updateCurrentId={props.updateCurrentId} updateIsAdmin={props.updateIsAdmin} />
       )}
     </>
   );
