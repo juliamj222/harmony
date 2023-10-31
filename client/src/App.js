@@ -40,13 +40,11 @@ function App() {
         <Route path="/rooms/view-all" element={ /* MOUNT HERE ROOM FEED? */ <MainIndex token={token}/>}/>
         <Route path="/feed/:id" element={<RoomFeedById token={token}/>}/>
 
-
       {/*   <Route path="/feed/:id" element={<RoomFeedById token={token}/>}/> */}
-
+      <Route path="/" element={ token ? <MainIndex token={token} updateToken={updateToken}/> : <Auth updateToken={updateToken} />}/>
       </Routes>
 
-      { token ? <MainIndex token={token} updateToken={updateToken}/> : <Auth updateToken={updateToken} />}
-      <ViewUsers token={token}/>
+ 
     </div>
   );
 }

@@ -1,14 +1,15 @@
 //rsfc
 
 import { Button, Card, CardBody, CardSubtitle, CardTitle, CardText } from "reactstrap";
+import {useNavigate} from "react-router-dom"
 
 function RoomCardF(props) {
     const {name, description, addedUsers, _id}=props.room;
+    const navigate=useNavigate()
 
     function handleView() {
       // Copy to clipboard
-      navigator.clipboard.writeText("http://localhost:3000/feed/"+_id);
-      console.log("Click")
+      navigate("/feed/"+_id);
     }
 
   return (

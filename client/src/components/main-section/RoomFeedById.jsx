@@ -2,7 +2,8 @@ import { useParams } from "react-router-dom";
 import { API_ROOM_VIEW_BY_ID } from "../../constants/endpoints";
 //imrse
 import React, { useState, useEffect } from 'react';
-import RoomCard from "./RoomCard";
+import RoomDisplay from "../room/RoomDisplay";
+
 
 //rsfc
 function RoomFeedById(props) {
@@ -43,7 +44,7 @@ useEffect(() => {
 
   return (
     <>
-      <RoomCard room={roomPost}/>
+    <RoomDisplay room={roomPost}/>
     </>
   );
 }
