@@ -7,7 +7,7 @@ const MainHeader = (props) => {
       <header className="d-flex justify-content-center align-items-center secondary-background">
         <div>
         {/* <img src={logo} alt="logo" className="App-logo" /> */}
-        <h2>Hello from MainHeader</h2>
+        <h2>Harmony Hotel</h2>
         </div>
       </header>
     </>
