@@ -42,7 +42,7 @@ useEffect(() => {
     >
     {description}
     </CardSubtitle>
-    {messages.map((message, index)=>(<Messages key={index}/>))}
+    {messages.map((message, index)=>(<Messages key={index} message={message}/>))}
     <Form>
         <FormGroup>
         <Input id="message" name="message" placeholder="Enter your message" type="text" value={message} onChange={(e)=>setMessage(e.target.value)} />   

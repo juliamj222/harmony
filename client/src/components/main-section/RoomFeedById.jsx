@@ -4,7 +4,6 @@ import { API_ROOM_VIEW_BY_ID } from "../../constants/endpoints";
 import React, { useState, useEffect } from 'react';
 import RoomDisplay from "../room/RoomDisplay";
 
-
 //rsfc
 function RoomFeedById(props) {
   const params = useParams();

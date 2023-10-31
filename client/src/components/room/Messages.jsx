@@ -1,6 +1,6 @@
 function Messages(props) {
   return (
-    <><h1>Hello from Messages</h1></>
+    <><h1>{props.message.body}</h1></>
   );
 }
 

@@ -6,6 +6,7 @@ import RoomCreate from "./RoomCreate";
 
 const MainIndex = (props) => {
   const [roomFeedItems, setRoomFeedItems] = useState([]);
+  const [userId, setUserId]=useState("")
   async function fetchRoomFeed() {
     try {
       //Headers
@@ -17,14 +18,13 @@ const MainIndex = (props) => {
         headers: myHeaders,
       };
       //Send Request  (open a file quickly ctrl,p  file name)
-
-
       const response = await fetch(API_ROOM_VIEW_ALL, requestOptions);
+      //Get a response
       const data = await response.json();
       console.log(data);
-      //Get a response
       //Set state
       setRoomFeedItems(data.rooms.reverse());
+      setUserId(data.userId)
     } catch (error) {
       console.error(error);
       props.updateToken(null);
@@ -35,7 +35,6 @@ const MainIndex = (props) => {
   useEffect(() => {
     //check to see if we have a token
     if (props.token==="") {
-
     return
     }
     // exit clause
@@ -48,13 +47,12 @@ const [roomFeed, setRoomFeed] = useState(true);
             evt.preventDefault();
             setRoomFeed(!roomFeed);
         }
-
     return ( 
         <>
  {roomFeed ? (
         <RoomCreate token={props.token} handleSwitchRooms={handleSwitchRooms} fetchRoomFeed={fetchRoomFeed}  />
       ) : (
-        <RoomFeed token={props.token}                 RoomFeed roomFeedItems={roomFeedItems} handleSwitchRooms={handleSwitchRooms}  />
+        <RoomFeed token={props.token} isAdmin={props.isAdmin} currentId={props.currentId} roomFeedItems={roomFeedItems} handleSwitchRooms={handleSwitchRooms} fetchRoomFeed={fetchRoomFeed} />
       )}
         </> 
         );
