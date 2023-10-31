@@ -4,11 +4,20 @@ import RoomCardF from "./RoomCard";
 function RoomFeed(props) {
     return (
       <>
-<div className="rounded p-2" style={{background: "var(--secondary)"}}>
+    <div style={{background: "var(--secondary)"}} className="rounded p-2">
   {/*mapping*/}    
 {props.roomFeedItems.map((room, index)=> (<RoomCardF key={index} room={room}/>
       ))} 
-      </div>
+      
+          {/* Buttons */}
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <button className="button rounded" onClick={props.handleSwitchRooms}>Create a room</button>
+
+              </div>
+              {/* Buttons End */}
+
+
+    </div>
       </>
     );
   }
