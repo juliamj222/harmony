@@ -1,9 +1,17 @@
 //rsfc
 
 import { Button, Card, CardBody, CardSubtitle, CardTitle, CardText } from "reactstrap";
+import {useNavigate} from "react-router-dom"
 
 function RoomCardF(props) {
-    const {name, description, addedUsers}=props.room;
+    const {name, description, addedUsers, _id}=props.room;
+    const navigate=useNavigate()
+
+    function handleView() {
+      // Copy to clipboard
+      navigate("/feed/"+_id);
+    }
+
   return (
     <>
 
@@ -25,8 +33,8 @@ function RoomCardF(props) {
 {props.room?.addedUsers?.firstName}
     </CardSubtitle>
     <CardText>{description}</CardText>
-    <Button>
-      Button
+    <Button onClick={handleView}>
+      View Room
     </Button>
   </CardBody>
 </Card>

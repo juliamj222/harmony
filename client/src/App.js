@@ -1,11 +1,12 @@
-import "./App.css";
-import MainHeader from "./components/header-section/MainHeader";
-import MainIndex from "./components/main-section/MainIndex";
-import Navigation from "./components/navigation-section/Navigation";
-import Auth from "./components/authorization/Auth";
-import ViewUsers from "./components/users/ViewUsers";
-import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import './App.css';
+import Auth from "./components/authorization/Auth";
+import MainHeader from './components/header-section/MainHeader';
+import MainIndex from './components/main-section/MainIndex';
+import Navigation from './components/navigation-section/Navigation';
+import React, { useState, useEffect } from 'react'; 
+import ViewUsers from "./components/users/ViewUsers";
+import RoomFeedById from "./components/main-section/RoomFeedById";
 import RoomFeed from "./components/main-section/RoomFeed";
 import UpdateUser from "./components/users/UpdateUser";
 
@@ -56,9 +57,15 @@ function App() {
   }, []);
   return (
     <div className="App">
-      <MainHeader />
-      <Navigation />
+
+          <MainHeader/>
+          <Navigation/>
+
+{/* MAIN CONTENT AREA */}
       <Routes>
+        <Route path="/auth" element={<Auth updateToken={updateToken}/>}/>
+        <Route path="/rooms/view-all" element={ /* MOUNT HERE ROOM FEED? */ <MainIndex token={token}/>}/>
+        <Route path="/feed/:id" element={<RoomFeedById token={token}/>}/>
         <Route path="/" element={token ? <MainIndex updateToken={updateToken} token={token} /> : <Auth updateCurrentId={updateCurrentId} updateToken={updateToken} updateIsAdmin={updateIsAdmin} />} />
         <Route path="/view-users" element={<ViewUsers currentId={currentId} isAdmin={isAdmin} token={token}/>} />
         <Route path="update/:id" element={<UpdateUser token={token} />} />
