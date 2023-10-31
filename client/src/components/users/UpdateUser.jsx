@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, FormGroup, Input, Label } from "reactstrap";
-import { API_GET_USER_BY_ID, API_UPDATE_USER } from "../../constants/endpoints";
+import { API_UPDATE_USER } from "../../constants/endpoints";
 
 function UpdateUser(props) {
   const params = useParams();
@@ -11,24 +11,6 @@ function UpdateUser(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  async function getUserById() {
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    let requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-    };
-    console.log( API_GET_USER_BY_ID + params.id)
-    const response = await fetch(
-      API_GET_USER_BY_ID + params.id,
-      requestOptions
-    );
-    const data = await response.json();
-    console.log(data)
-    setEmail(data.user.email);
-    setFirstName(data.user.firstName);
-    setLastName(data.user.lastName);
-  }
 
   async function handleUpdate(evt) {
     try {
@@ -66,10 +48,6 @@ function UpdateUser(props) {
     }
   }
 
-  useEffect(() => {
-    getUserById();
-  }, []);
-
   return (
     <>
       <div className="d-flex justify-content-center mt-5 h-auto">
@@ -89,7 +67,7 @@ function UpdateUser(props) {
               <Input
                 id="email"
                 name="email"
-                placeholder="email@placeholder.com"
+                placeholder="Enter to Change your Email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -115,7 +93,7 @@ function UpdateUser(props) {
               <Input
                 id="firstName"
                 name="firstName"
-                placeholder="Enter your First Name"
+                placeholder="Enter to Change your First Name"
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
@@ -128,7 +106,7 @@ function UpdateUser(props) {
               <Input
                 id="lastName"
                 name="lastName"
-                placeholder="Enter your Last Name"
+                placeholder="Enter to Change your Last Name"
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}

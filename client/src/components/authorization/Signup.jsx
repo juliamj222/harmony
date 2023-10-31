@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 import { API_USER_SIGNUP } from "../../constants/endpoints";
+import { useNavigate } from "react-router-dom";
 
 function Signup(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("password123");
   const [firstName, setFirstName] = useState("Place");
   const [lastName, setLastName] = useState("Holder");
+  const navigate = useNavigate();
 
   async function handleSubmit(evt) {
     try {
@@ -39,6 +41,7 @@ function Signup(props) {
         props.updateCurrentId(data.user._id);
         props.updateIsAdmin(data.user.isAdmin);
       }
+      navigate("/");
     } catch (error) {
       console.error(error);
     }

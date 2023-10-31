@@ -69,7 +69,7 @@ async function deleteUser(id) {
             </div>
             {user._id === props.currentId || props.isAdmin === "true" ? (
               <div>
-                <button className="button rounded" onClick={() => {navigate("/update/" + user._id)}}>
+                <button className="button rounded" onClick={() => {navigate("/update-user/" + user._id)}}>
                   Update
                 </button>
                 <button className="button rounded m-2" onClick={() => {deleteUser(user._id)}}>
