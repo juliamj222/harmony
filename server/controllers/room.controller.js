@@ -6,7 +6,8 @@ const validateSession = require("../middleware/validate-session");
 //- [ ] Create endpoint - user automatically becomes the addedUser, we can add more addedUsers with the array function
 router.post("/add", validateSession, async (req, res) => {
   try {
-    const { name, description, addedUsers, removeAddedUsers, userId } = req.body;
+    const { name, description, addedUsers, removeAddedUsers, userId } =
+      req.body;
     const room = new Room({
       name: name,
       description: description,
@@ -46,9 +47,9 @@ Description: View a room by its ID
 
 router.get("/view-by-id/:id", validateSession, async (req, res) => {
   try {
-    const id= req.params.id;
-    const room = await Room.findById(id). populate("name", "description");
- 
+    const id = req.params.id;
+    const room = await Room.findById(id).populate("name", "description");
+
     res.json({ message: "success from get", room: room });
   } catch (error) {
     res.status(500).json({
@@ -61,80 +62,29 @@ router.get("/view-by-id/:id", validateSession, async (req, res) => {
 
 // delete
 router.delete("/delete/:id", validateSession, async (req, res) => {
-    try {
-      const id = req.params.id;
-      const conditions={
-        _id: id,
-        userId: req.user._id,
-      } 
-      if(req.user.isAdmin) {
+  try {
+    const id = req.params.id;
+    const conditions = {
+      _id: id,
+      userId: req.user._id,
+    };
+    if (req.user.isAdmin) {
       const room = await Room.deleteOne({ _id: id });
       res.json({
         message:
           room.deletedCount === 1
             ? "the room was deleted"
             : "failure to delete the room",
-      })}
-      else {
-        const room = await Room.deleteOne(conditions);
-        res.json({
-          message:
-            room.deletedCount === 1
-              ? "the room was deleted"
-              : "failure to delete the room",
-        })
-      } 
-    } catch (error) {
-      res.status(500).json({
-        message: error.message,
+      });
+    } else {
+      const room = await Room.deleteOne(conditions);
+      res.json({
+        message:
+          room.deletedCount === 1
+            ? "the room was deleted"
+            : "failure to delete the room",
       });
     }
-  });
-
-// update function. we can add addedUsers in this function too, pushing them into the array
-
-router.patch("/update/:id", validateSession, getRoom, async function (req, res) {
-  try {
-    const id = req.params.id;
-    const conditions = { _id: id, userId: req.user._id };
-    const currentUser = req.room.addedUsers;
-    let {addedUsers, name, description, removeAddedUsers}=req.body;
-    if(req.user.isAdmin) {
-      if (removeAddedUsers) {
-        addedUsers=currentUser.filter(user => !addedUsers.includes(user))
-      } 
-      else {
-        currentUser.push(addedUsers);
-        addedUsers=currentUser; 
-      }
-    const options = { new: true };
-    const data= {name, description, addedUsers}
-    const room = await Room.findOneAndUpdate({_id:id}, data, options);
-    if (!room) {
-      throw new Error("Room was not found");
-    }
-    res.json({
-      message: "success from update",
-      room: room,
-    })}
-    else {
-      if (removeAddedUsers) {
-        addedUsers=currentUser.filter(user => !addedUsers.includes(user))
-      } 
-      else {
-        currentUser.push(addedUsers);
-        addedUsers=currentUser; 
-      }
-    const options = { new: true };
-    const data= {name, description, addedUsers}
-    const room = await Room.findOneAndUpdate(conditions, data, options);
-    if (!room) {
-      throw new Error("Room was not found");
-    }
-    res.json({
-      message: "success from update",
-      room: room,
-    })} 
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -142,7 +92,59 @@ router.patch("/update/:id", validateSession, getRoom, async function (req, res) 
   }
 });
 
+// update function. we can add addedUsers in this function too, pushing them into the array
+
+router.patch(
+  "/update/:id",
+  validateSession,
+  getRoom,
+  async function (req, res) {
+    try {
+      const id = req.params.id;
+      const conditions = { _id: id, userId: req.user._id };
+      const currentUser = req.room.addedUsers;
+      let { addedUsers, name, description, removeAddedUsers } = req.body;
+      if (req.user.isAdmin) {
+        if (removeAddedUsers) {
+          addedUsers = currentUser.filter((user) => !addedUsers.includes(user));
+        } else {
+          currentUser.push(addedUsers);
+          addedUsers = currentUser;
+        }
+        const options = { new: true };
+        const data = { name, description, addedUsers };
+        const room = await Room.findOneAndUpdate({ _id: id }, data, options);
+        if (!room) {
+          throw new Error("Room was not found");
+        }
+        res.json({
+          message: "success from update",
+          room: room,
+        });
+      } else {
+        if (removeAddedUsers) {
+          addedUsers = currentUser.filter((user) => !addedUsers.includes(user));
+        } else {
+          currentUser.push(addedUsers);
+          addedUsers = currentUser;
+        }
+        const options = { new: true };
+        const data = { name, description, addedUsers };
+        const room = await Room.findOneAndUpdate(conditions, data, options);
+        if (!room) {
+          throw new Error("Room was not found");
+        }
+        res.json({
+          message: "success from update",
+          room: room,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+);
 
 module.exports = router;
-
-

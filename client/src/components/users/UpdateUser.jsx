@@ -18,16 +18,13 @@ function UpdateUser(props) {
       method: "GET",
       headers: myHeaders,
     };
-    console.log( API_GET_USER_BY_ID + params.id)
+    console.log(API_GET_USER_BY_ID + params.id);
     const response = await fetch(
       API_GET_USER_BY_ID + params.id,
       requestOptions
     );
     const data = await response.json();
-    console.log(data)
-    setEmail(data.user.email);
-    setFirstName(data.user.firstName);
-    setLastName(data.user.lastName);
+    console.log(data);
   }
 
   async function handleUpdate(evt) {
