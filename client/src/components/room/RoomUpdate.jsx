@@ -36,6 +36,10 @@ function RoomUpdate(props) {
         <FormGroup>
           <Label for="addedUsers">Added Users</Label>
           <Input
+            style={{
+              width: "100%",
+              color: "var(--tritary)",
+            }}
             id="addedUsers"
             name="addedUsers"
             value={addedUsers}
