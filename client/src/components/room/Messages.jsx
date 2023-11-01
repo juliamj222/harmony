@@ -1,10 +1,12 @@
 import {
+  Alert,
   Button,
   Card,
   CardBody,
   CardSubtitle,
   CardText,
   CardTitle,
+  Collapse,
   Input,
 } from "reactstrap";
 import {
@@ -19,6 +21,10 @@ function Messages(props) {
   const [editMode, setEditMode] = useState(false);
   const [bodyInput, setBodyInput] = useState(props.message.body);
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
+
   function handleEdit() {
     setEditMode(!editMode);
   }
@@ -29,7 +35,7 @@ function Messages(props) {
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", props.token);
       let body = {
-        body: bodyInput
+        body: bodyInput,
       };
       let requestOptions = {
         method: "PATCH",
@@ -40,8 +46,8 @@ function Messages(props) {
         API_UPDATE_MESSAGE + props.message._id,
         requestOptions
       );
-      const data = await response.json()
-      console.log(data)
+      const data = await response.json();
+      console.log(data);
       handleEdit();
       props.getMessages();
     } catch (error) {
@@ -71,10 +77,12 @@ function Messages(props) {
         className="mb-1 mt-1"
         style={{
           width: "100%",
+          display: "flex",
+          flexDirection: "row", background: "var(--backgroundColor)", border: "0px", borderRadius: "5px"
         }}
       >
-        <CardBody>
-          <CardTitle tag="h5">
+        <CardBody style={{ background: "var(--backgroundColor)", border: "0px", borderRadius: "5px", maxWidth: "80%"}}>
+          <CardTitle tag="h5" style={{color: "var(--tritary)"}}>
             {user.firstName} {user.lastName}
           </CardTitle>
           {editMode ? (
@@ -85,23 +93,39 @@ function Messages(props) {
               onChange={(e) => setBodyInput(e.target.value)}
             />
           ) : (
-            <CardText tag="h4">{props.message.body}</CardText>
+            <CardText tag="h4" style={{color: "var(--tritary)"}}>{props.message.body}</CardText>
           )}
-          <CardSubtitle className="mb-2 text-muted" tag="h6">
+        <CardSubtitle style={{color: "var(--tritary)"}} className="mb-2" tag="h6">
             {props.message.when}
           </CardSubtitle>
+        </CardBody>
           {props.currentId === props.message.user ||
           props.isAdmin === "true" ? (
-            <div className="d-flex">
-              <button className="button rounded" onClick={handleEdit}>
-                Update
-              </button>
-              <button
-                className="button rounded"
-                onClick={props.toggle}
+            <div style={{ display: "flex", flexDirection: "column", justifyContent:"flex-start", width: "20%"}}>
+              <Button
+                onClick={toggle}
+                style={{
+                  fontSize: "42px",
+                  color: "var(--tritary)",
+                  background: "var(--backgroundColor)",
+                  border: "none",
+                  padding: "0px",
+                  alignSelf: "end",
+                  marginRight: "1em"
+                }}
               >
-                Delete
-              </button>
+                ...
+              </Button>
+              <Collapse isOpen={isOpen}>
+                <div className="d-flex" >
+                  <button style={{margin: "3px", marginBottom:"6px"}} className="button rounded" onClick={handleEdit}>
+                    {editMode ? "Cancel" : "Update"}
+                  </button>
+                  <button style={{margin: "3px", marginBottom:"6px"}} className="button rounded" onClick={props.toggle}>
+                    Delete
+                  </button>
+                </div>
+              </Collapse>
             </div>
           ) : null}
           {editMode && props.currentId === props.message.user ? (
@@ -109,9 +133,14 @@ function Messages(props) {
               Save
             </button>
           ) : null}
-        </CardBody>
       </Card>
-      <DeleteConfirmation modal={props.modal} toggle={props.toggle} name={"your message"} id={props.message._id} function={props.handleDeleteMessage} />
+      <DeleteConfirmation
+        modal={props.modal}
+        toggle={props.toggle}
+        name={"your message"}
+        id={props.message._id}
+        function={props.handleDeleteMessage}
+      />
     </>
   );
 }
