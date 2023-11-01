@@ -6,7 +6,7 @@ function RoomFeed(props) {
       <>
     <div style={{background: "var(--secondary)"}} className="rounded p-2 m-2">
   {/*mapping*/}    
-{props.roomFeedItems.map((room, index)=> (<RoomCardF key={index} room={room}/>
+{props.roomFeedItems.map((room, index)=> (<RoomCardF key={index} room={room} isAdmin={props.isAdmin} currentId={props.currentId} fetchRoomFeed={props.fetchRoomFeed} token={props.token} />
       ))} 
       
           {/* Buttons */}

@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import ViewUsers from "./components/users/ViewUsers";
 import RoomFeedById from "./components/main-section/RoomFeedById";
 import UpdateUser from "./components/users/UpdateUser";
+import RoomUpdate from "./components/room/RoomUpdate";
 
 function App() {
   const [token, setToken] = useState("");
@@ -58,20 +59,33 @@ function App() {
     <div className="App">
       <MainHeader />
       <Navigation />
-
       {/* MAIN CONTENT AREA */}
       <Routes>
+        <Route
+          path="/feed/:id"
+          element={
+            <RoomFeedById
+              currentId={currentId}
+              isAdmin={isAdmin}
+              token={token}
+            />
+          }
+        />
         <Route path="/auth" element={<Auth updateToken={updateToken} updateCurrentId={updateCurrentId} updateIsAdmin={updateIsAdmin} />} />
         <Route
           path="/rooms/view-all"
           element={<MainIndex token={token} />}
         />
-        <Route path="/feed/:id" element={<RoomFeedById currentId={currentId} isAdmin={isAdmin} token={token} />} />
         <Route
           path="/"
           element={
             token ? (
-              <MainIndex updateToken={updateToken} token={token} />
+              <MainIndex
+                currentId={currentId}
+                isAdmin={isAdmin}
+                updateToken={updateToken}
+                token={token}
+              />
             ) : (
               <Auth
                 updateCurrentId={updateCurrentId}
@@ -87,6 +101,8 @@ function App() {
             <ViewUsers currentId={currentId} isAdmin={isAdmin} token={token} />
           }
         />
+        <Route path="update/:id" element={<UpdateUser token={token} />} />
+        <Route path="update-room/:id" element={<RoomUpdate token={token} />} />
         <Route path="update-user/:id" element={<UpdateUser token={token} currentId={currentId} />} />
       </Routes>
     </div>
