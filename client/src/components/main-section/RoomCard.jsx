@@ -122,7 +122,6 @@ function RoomCardF(props) {
               {/* for each one of these, a usestate */}
               <CardSubtitle className="mb-2 text-muted" tag="h6">
                 {props.room?.addedUsers?.firstName}
-
                 {editModeEnabled ? (
                   <>
                     <Label for="addedUsers">Users to remove or add</Label>

@@ -26,6 +26,9 @@ function Navigation(props) {
             <NavItem>
               <NavLink href="/view-users">View Users</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/auth">Login / Signup</NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>

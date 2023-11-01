@@ -1,10 +1,12 @@
 import { API_USER_LOGIN } from "../../constants/endpoints";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 
 function Login(props) {
   const [email, setEmail] = useState("admin1admin.com");
   const [password, setPassword] = useState("admin");
+  const navigate = useNavigate();
 
   async function handleSubmit(evt) {
     try {
@@ -31,6 +33,7 @@ function Login(props) {
       props.updateToken(data.token);
       props.updateCurrentId(data.user._id);
       props.updateIsAdmin(data.user.isAdmin);
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
