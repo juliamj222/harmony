@@ -9,6 +9,7 @@ import {
   Label,
   Input,
   Form,
+  ButtonGroup,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import {
@@ -17,6 +18,7 @@ import {
 } from "../../constants/endpoints";
 //imrs import usestate
 import React, { useState } from "react";
+import DeleteConfirmation from "../../ui/DeleteConfirmation";
 
 function RoomCardF(props) {
   const { name, description, addedUsers, _id } = props.room;
@@ -27,6 +29,8 @@ function RoomCardF(props) {
   const [descriptionInput, setDescriptionInput] = useState(description);
   const [addedUsersInput, setAddedUsersInput] = useState("");
   const [removeSwitch, setRemoveSwitch] = useState(false);
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
 
   function handleView() {
     // Copy to clipboard
@@ -89,6 +93,7 @@ function RoomCardF(props) {
       console.log(data);
       // Refresh the feed
       props.fetchRoomFeed();
+      toggle();
     } catch (error) {
       console.error(error);
     }
@@ -103,6 +108,8 @@ function RoomCardF(props) {
             className="mb-3 mt-3"
             style={{
               width: "100%",
+              backgroundColor: "var(--backgroundColor)",
+              color: "var(--tritary)",
             }}
           >
             <CardBody>
@@ -124,7 +131,15 @@ function RoomCardF(props) {
                 {props.room?.addedUsers?.firstName}
                 {editModeEnabled ? (
                   <>
-                    <Label for="addedUsers">Users to remove or add</Label>
+                    <Label
+                      for="addedUsers"
+                      style={{
+                        width: "100%",
+                        color: "var(--tritary)",
+                      }}
+                    >
+                      Users to remove or add
+                    </Label>
                     <Input
                       id="addedUsers"
                       value={addedUsersInput}
@@ -138,14 +153,15 @@ function RoomCardF(props) {
                         setRemoveSwitch(!removeSwitch);
                       }}
                     />
-                    <Label for="switch" style={{ marginLeft: "3px" }}>
+                    <Label
+                      for="switch"
+                      style={{ marginLeft: "3px", color: "var(--tritary)" }}
+                    >
                       {" "}
                       Remove?
                     </Label>
                   </>
-                ) : (
-                  <CardSubtitle tag="h5">{addedUsers}</CardSubtitle>
-                )}
+                ) : null}
               </CardSubtitle>
               {editModeEnabled ? (
                 <>
@@ -161,30 +177,56 @@ function RoomCardF(props) {
               ) : (
                 <CardText>{description}</CardText>
               )}
-              <Button onClick={handleView}>View Room</Button>
-              {props.currentId === props.room.userId ||
-              props.isAdmin === "true" ? (
-                <div>
-                  {/* delete button */}
-                  <Button color="danger" onClick={handleDelete}>
-                    Delete
-                  </Button>
-                  {/* update button */}
-                  <Button color="danger" onClick={handleToggleUpdate}>
-                    {editModeEnabled ? "Cancel" : "Update"}
-                  </Button>
-                  {/* save button, if editmode is enabled... && */}
-                  {editModeEnabled && (
-                    <Button color="success" onClick={handleUpdate}>
-                      Save
+              <ButtonGroup className="my-2 d-flex justify-content-center">
+                <Button
+                  onClick={handleView}
+                  style={{ border: "1px solid black", borderRadius: "5px" }}
+                >
+                  View Room
+                </Button>
+                {props.currentId === props.room.userId ||
+                props.isAdmin === "true" ? (
+                  <div>
+                    {/* delete button */}
+                    <Button
+                      color="danger"
+                      style={{ border: "1px solid black" }}
+                      onClick={toggle}
+                    >
+                      Delete
                     </Button>
-                  )}
-                </div>
-              ) : null}
+
+                    {/* update button */}
+                    <Button
+                      color="danger"
+                      style={{ border: "1px solid black" }}
+                      onClick={handleToggleUpdate}
+                    >
+                      {editModeEnabled ? "Cancel" : "Update"}
+                    </Button>
+                    {/* save button, if editmode is enabled... && */}
+                    {editModeEnabled && (
+                      <Button
+                        color="success"
+                        style={{ border: "1px solid black" }}
+                        onClick={handleUpdate}
+                      >
+                        Save
+                      </Button>
+                    )}
+                  </div>
+                ) : null}
+              </ButtonGroup>
             </CardBody>
           </Card>
         </Form>
       ) : null}
+      <DeleteConfirmation
+        modal={modal}
+        toggle={toggle}
+        name={name}
+        function={handleDelete}
+      />
     </>
   );
 }

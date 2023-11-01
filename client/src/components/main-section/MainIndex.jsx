@@ -6,7 +6,7 @@ import RoomCreate from "./RoomCreate";
 
 const MainIndex = (props) => {
   const [roomFeedItems, setRoomFeedItems] = useState([]);
-  const [userId, setUserId]=useState("")
+  const [userId, setUserId] = useState("");
   async function fetchRoomFeed() {
     try {
       //Headers
@@ -24,7 +24,7 @@ const MainIndex = (props) => {
       console.log(data);
       //Set state
       setRoomFeedItems(data.rooms.reverse());
-      setUserId(data.userId)
+      setUserId(data.userId);
     } catch (error) {
       console.error(error);
       props.updateToken(null);
@@ -34,27 +34,37 @@ const MainIndex = (props) => {
   //uef
   useEffect(() => {
     //check to see if we have a token
-    if (props.token==="") {
-    return
+    if (props.token === "") {
+      return;
     }
     // exit clause
-fetchRoomFeed();
-}, [props.token]);
-console.log(props.token)
+    fetchRoomFeed();
+  }, [props.token]);
+  console.log(props.token);
 
-const [roomFeed, setRoomFeed] = useState(true);
-        function handleSwitchRooms(evt) {
-            evt.preventDefault();
-            setRoomFeed(!roomFeed);
-        }
-    return ( 
-        <>
- {roomFeed ? (
-        <RoomCreate token={props.token} handleSwitchRooms={handleSwitchRooms} fetchRoomFeed={fetchRoomFeed}  />
+  const [roomFeed, setRoomFeed] = useState(true);
+  function handleSwitchRooms() {
+    setRoomFeed(!roomFeed);
+  }
+  return (
+    <>
+      {roomFeed ? (
+        <RoomCreate
+          token={props.token}
+          handleSwitchRooms={handleSwitchRooms}
+          fetchRoomFeed={fetchRoomFeed}
+        />
       ) : (
-        <RoomFeed token={props.token} isAdmin={props.isAdmin} currentId={props.currentId} roomFeedItems={roomFeedItems} handleSwitchRooms={handleSwitchRooms} fetchRoomFeed={fetchRoomFeed} />
+        <RoomFeed
+          token={props.token}
+          isAdmin={props.isAdmin}
+          currentId={props.currentId}
+          roomFeedItems={roomFeedItems}
+          handleSwitchRooms={handleSwitchRooms}
+          fetchRoomFeed={fetchRoomFeed}
+        />
       )}
-        </> 
-        );
-}
+    </>
+  );
+};
 export default MainIndex;
