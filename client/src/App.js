@@ -87,7 +87,7 @@ function App() {
             <ViewUsers currentId={currentId} isAdmin={isAdmin} token={token} />
           }
         />
-        <Route path="update-user/:id" element={<UpdateUser token={token} />} />
+        <Route path="update-user/:id" element={<UpdateUser token={token} currentId={currentId} />} />
       </Routes>
     </div>
   );

@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { API_DELETE_USER, API_GET_ALL_USERS } from "../../constants/endpoints";
 import { useNavigate } from "react-router-dom";
+import DeleteConfirmation from "../../ui/DeleteConfirmation";
 
 function ViewUsers(props) {
   const [userList, setUserList] = useState([]);
   const navigate = useNavigate();
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
 
   async function getUserList() {
     try {
@@ -26,7 +30,6 @@ function ViewUsers(props) {
     getUserList();
   }, []);
 
-// ! IMPORTANT ADD MODAL THAT ASKS FOR CONFORMATION BEFOR DELETING
 
 async function deleteUser(id) {
   try {
@@ -39,6 +42,7 @@ async function deleteUser(id) {
       };
       const response = await fetch(API_DELETE_USER + id, requestOptions);
       getUserList();
+      toggle();
   } catch (error) {
     console.error(error)
   }
@@ -72,12 +76,13 @@ async function deleteUser(id) {
                 <button className="button rounded" onClick={() => {navigate("/update-user/" + user._id)}}>
                   Update
                 </button>
-                <button className="button rounded m-2" onClick={() => {deleteUser(user._id)}}>
+                <button className="button rounded m-2" onClick={toggle}>
                   Delete
                 </button>
               </div>
             ) : null}
           </div>
+           <DeleteConfirmation modal={modal} toggle={toggle} name={user.firstName} id={user._id} function={deleteUser} />
         </div>
       ))}
     </>

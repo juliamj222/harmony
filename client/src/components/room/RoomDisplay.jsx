@@ -10,7 +10,11 @@ import {
   Input,
 } from "reactstrap";
 import React, { useState, useEffect } from "react";
-import { API_DELETE_MESSAGE, API_MESSAGES_IN_ROOM } from "../../constants/endpoints";
+import {
+  API_CREATE_MESSAGE,
+  API_DELETE_MESSAGE,
+  API_MESSAGES_IN_ROOM,
+} from "../../constants/endpoints";
 import Messages from "./Messages";
 
 function RoomDisplay(props) {
@@ -19,10 +23,14 @@ function RoomDisplay(props) {
   const [message, setMessage] = useState("");
   const [timer, setTimer] = useState(0);
 
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
+
   function timerHandler() {
     setTimer(1);
   }
-  setInterval(timerHandler, 300)
+  setInterval(timerHandler, 300);
 
   async function getMessages() {
     try {
@@ -38,19 +46,40 @@ function RoomDisplay(props) {
   async function handleDeleteMessage(id) {
     try {
       let myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", props.token);
-        let requestOptions = {
-          method: "DELETE",
-          headers: myHeaders,
-        };
-        const response = await fetch(API_DELETE_MESSAGE + id, requestOptions);
-        getMessages();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", props.token);
+      let requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+      };
+      const response = await fetch(API_DELETE_MESSAGE + id, requestOptions);
+      getMessages();
+      toggle();
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
+  async function createMessage() {
+    try {
+      let myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", props.token);
+      let body = {
+        body: message,
+      };
+      let requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(body),
+      };
+      const response = await fetch(API_CREATE_MESSAGE + _id, requestOptions);
+      getMessages();
+      setMessage("");
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     getMessages();
@@ -65,7 +94,17 @@ function RoomDisplay(props) {
             {description}
           </CardSubtitle>
           {messages.map((message, index) => (
-            <Messages key={index} message={message} currentId={props.currentId} isAdmin={props.isAdmin} handleDeleteMessage={handleDeleteMessage}/>
+            <Messages
+              key={index}
+              message={message}
+              currentId={props.currentId}
+              isAdmin={props.isAdmin}
+              handleDeleteMessage={handleDeleteMessage}
+              getMessages={getMessages}
+              token={props.token}
+              toggle={toggle}
+              modal={modal}
+            />
           ))}
           <Form>
             <FormGroup>
@@ -78,7 +117,7 @@ function RoomDisplay(props) {
                 onChange={(e) => setMessage(e.target.value)}
               />
             </FormGroup>
-            <Button>Submit</Button>
+            <Button onClick={createMessage}>Send</Button>
           </Form>
         </CardBody>
       </Card>
