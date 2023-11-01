@@ -1,13 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import './App.css';
+import "./App.css";
 import Auth from "./components/authorization/Auth";
-import MainHeader from './components/header-section/MainHeader';
-import MainIndex from './components/main-section/MainIndex';
-import Navigation from './components/navigation-section/Navigation';
-import React, { useState, useEffect } from 'react'; 
+import MainHeader from "./components/header-section/MainHeader";
+import MainIndex from "./components/main-section/MainIndex";
+import Navigation from "./components/navigation-section/Navigation";
+import React, { useState, useEffect } from "react";
 import ViewUsers from "./components/users/ViewUsers";
 import RoomFeedById from "./components/main-section/RoomFeedById";
-import RoomFeed from "./components/main-section/RoomFeed";
 import UpdateUser from "./components/users/UpdateUser";
 
 function App() {
@@ -27,7 +26,7 @@ function App() {
 
   function updateIsAdmin(checkIsAdmin) {
     setIsAdmin(true);
-    localStorage.setItem("Admin", checkIsAdmin)
+    localStorage.setItem("Admin", checkIsAdmin);
   }
 
   //getting the token:
@@ -47,7 +46,7 @@ function App() {
 
   useEffect(() => {
     const isAdmin = localStorage.getItem("Admin");
-    if(isAdmin){
+    if (isAdmin) {
       setIsAdmin(isAdmin);
     }
   }, []);
@@ -57,20 +56,39 @@ function App() {
   }, []);
   return (
     <div className="App">
+      <MainHeader />
+      <Navigation />
 
-          <MainHeader/>
-          <Navigation/>
-
-{/* MAIN CONTENT AREA */}
+      {/* MAIN CONTENT AREA */}
       <Routes>
-        <Route path="/auth" element={<Auth updateToken={updateToken}/>}/>
-        <Route path="/rooms/view-all" element={ /* MOUNT HERE ROOM FEED? */ <MainIndex token={token}/>}/>
-        <Route path="/feed/:id" element={<RoomFeedById token={token}/>}/>
-        <Route path="/" element={token ? <MainIndex updateToken={updateToken} token={token} /> : <Auth updateCurrentId={updateCurrentId} updateToken={updateToken} updateIsAdmin={updateIsAdmin} />} />
-        <Route path="/view-users" element={<ViewUsers currentId={currentId} isAdmin={isAdmin} token={token}/>} />
-        <Route path="update/:id" element={<UpdateUser token={token} />} />
+        <Route path="/auth" element={<Auth updateToken={updateToken} updateCurrentId={updateCurrentId} updateIsAdmin={updateIsAdmin} />} />
+        <Route
+          path="/rooms/view-all"
+          element={<MainIndex token={token} />}
+        />
+        <Route path="/feed/:id" element={<RoomFeedById currentId={currentId} isAdmin={isAdmin} token={token} />} />
+        <Route
+          path="/"
+          element={
+            token ? (
+              <MainIndex updateToken={updateToken} token={token} />
+            ) : (
+              <Auth
+                updateCurrentId={updateCurrentId}
+                updateToken={updateToken}
+                updateIsAdmin={updateIsAdmin}
+              />
+            )
+          }
+        />
+        <Route
+          path="/view-users"
+          element={
+            <ViewUsers currentId={currentId} isAdmin={isAdmin} token={token} />
+          }
+        />
+        <Route path="update-user/:id" element={<UpdateUser token={token} currentId={currentId} />} />
       </Routes>
-      
     </div>
   );
 }

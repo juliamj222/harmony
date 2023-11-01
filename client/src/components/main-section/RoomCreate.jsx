@@ -40,8 +40,8 @@ const [description, setDescription] = useState("");
   }
   return (
     <>
-      <div className="d-flex neutral-background rounded p-5 flex-column" style={{background: "var(--secondary)"}}>
-        <h2 className="font-primary text-center">Create a Room Post</h2>
+      <div className="d-flex neutral-background rounded p-5 m-2 flex-column" style={{background: "var(--secondary)"}}>
+        <h2 className="font-primary text-center">Create a Room</h2>
         <Form >
           {/* Name, Description */}
           {/* Form Group Name */}

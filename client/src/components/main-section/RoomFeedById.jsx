@@ -8,7 +8,6 @@ import RoomDisplay from "../room/RoomDisplay";
 //rsfc
 function RoomFeedById(props) {
   const params = useParams();
-  console.log(params);
     const [roomPost, setRoomPost]=useState({})
   async function fetchRoomFeed() {
     try {
@@ -27,7 +26,6 @@ function RoomFeedById(props) {
       );
       //  Get A Response
       const data = await response.json();
-      console.log(data);
       // Set State
       setRoomPost(data.room);
     } catch (error) {
@@ -44,7 +42,7 @@ useEffect(() => {
 
   return (
     <>
-    <RoomDisplay room={roomPost}/>
+    <RoomDisplay token={props.token} currentId={props.currentId} isAdmin={props.isAdmin} room={roomPost}/>
     </>
   );
 }

@@ -30,7 +30,7 @@ function RoomCardF(props) {
       className="mb-2 text-muted"
       tag="h6"
     >
-{props.room?.addedUsers?.firstName}
+{addedUsers?.firstName}
     </CardSubtitle>
     <CardText>{description}</CardText>
     <Button onClick={handleView}>

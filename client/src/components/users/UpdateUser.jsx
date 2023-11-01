@@ -10,25 +10,9 @@ function UpdateUser(props) {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-
-  async function getUserById() {
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    let requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-    };
-    console.log( API_GET_USER_BY_ID + params.id)
-    const response = await fetch(
-      API_GET_USER_BY_ID + params.id,
-      requestOptions
-    );
-    const data = await response.json();
-    console.log(data)
-    setEmail(data.user.email);
-    setFirstName(data.user.firstName);
-    setLastName(data.user.lastName);
-  }
+  const [user, setUser] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminSwitch, setAdminSwitch] = useState(false);
 
   async function handleUpdate(evt) {
     try {
@@ -37,7 +21,9 @@ function UpdateUser(props) {
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", props.token);
 
-      let body = {};
+      let body = {
+        isAdmin: adminSwitch,
+      };
       if (email !== "") {
         body.email = email;
       }
@@ -66,8 +52,38 @@ function UpdateUser(props) {
     }
   }
 
+  async function getUserById() {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    let requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+    };
+    const response = await fetch(API_GET_USER_BY_ID + params.id, requestOptions);
+    const data = await response.json();
+    setAdminSwitch(data.user.isAdmin)
+    setUser(data.user)
+    return data;
+  }
+  async function getCurrentUserById() {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    let requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+    };
+    const response = await fetch(API_GET_USER_BY_ID + props.currentId, requestOptions);
+    const data = await response.json();
+    setIsAdmin(data.user.isAdmin)
+    return data;
+  }
+
   useEffect(() => {
-    getUserById();
+    getUserById()
+  }, []);
+
+  useEffect(() => {
+    getCurrentUserById()
   }, []);
 
   return (
@@ -81,7 +97,7 @@ function UpdateUser(props) {
             color: "var(--tritary)",
           }}
         >
-          <h2 className="text-center">Update</h2>
+          <h2 className="text-center">Update {user.firstName} {user.lastName}</h2>
           <Form>
             {/* Form group Email */}
             <FormGroup>
@@ -89,7 +105,7 @@ function UpdateUser(props) {
               <Input
                 id="email"
                 name="email"
-                placeholder="email@placeholder.com"
+                placeholder="Enter to Change your Email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -98,11 +114,11 @@ function UpdateUser(props) {
             {/* Form Group Email End */}
             {/* Form Group Password */}
             <FormGroup>
-              <Label for="password">Password</Label>
+              <Label for="password">Please Input Password</Label>
               <Input
                 id="password"
                 name="password"
-                placeholder="Enter your Password"
+                placeholder="Password Is Required for Update"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -115,7 +131,7 @@ function UpdateUser(props) {
               <Input
                 id="firstName"
                 name="firstName"
-                placeholder="Enter your First Name"
+                placeholder="Enter to Change your First Name"
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
@@ -128,12 +144,17 @@ function UpdateUser(props) {
               <Input
                 id="lastName"
                 name="lastName"
-                placeholder="Enter your Last Name"
+                placeholder="Enter to Change your Last Name"
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
             </FormGroup>
+            {isAdmin ? 
+            <FormGroup switch>
+              <Input type="switch" role="switch" checked={adminSwitch} onClick={() => {setAdminSwitch(!adminSwitch)}} />
+              <Label check>Admin</Label>
+            </FormGroup> : null }
             {/* Form Group LastName End */}
             {/* Buttons */}
             <div style={{ display: "flex", justifyContent: "center" }}>
