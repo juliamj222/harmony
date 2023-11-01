@@ -87,7 +87,7 @@ function RoomDisplay(props) {
 
   return (
     <>
-      <Card className="m-2">
+      <Card className="m-2" style={{ background: "var(--secondary)" }}>
         <CardBody>
           <CardTitle tag="h5">{name}</CardTitle>
           <CardSubtitle className="mb-2 text-muted" tag="h6">
@@ -106,9 +106,17 @@ function RoomDisplay(props) {
               modal={modal}
             />
           ))}
-          <Form>
-            <FormGroup>
+          <Form
+            style={{
+              display: "flex",
+              width: "100%",
+              marginTop: "10px",
+              alignItems: "center",
+            }}
+          >
+            <FormGroup style={{ display: "flex", width: "100%", justifyContent: "space-around"}}>
               <Input
+                style={{ display: "flex"}}
                 id="message"
                 name="message"
                 placeholder="Enter your message"
@@ -116,8 +124,13 @@ function RoomDisplay(props) {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
+            <Button
+              style={{ background: "var(--buttonColor)", marginLeft: "10px" }}
+              onClick={createMessage}
+            >
+              Send
+            </Button>
             </FormGroup>
-            <Button onClick={createMessage}>Send</Button>
           </Form>
         </CardBody>
       </Card>

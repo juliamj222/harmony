@@ -30,10 +30,10 @@ const [description, setDescription] = useState("");
         //send request
         const response=await fetch (API_ROOM_CREATE, requestOptions)
         //get a response
-        const data=await response.json();
+
         // refresh the room feed
         props.fetchRoomFeed();
-        console.log(data);
+        props.handleSwitchRooms();
     } catch (error) {
         console.error(error)
     }
