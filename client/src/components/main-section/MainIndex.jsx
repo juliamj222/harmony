@@ -43,8 +43,7 @@ fetchRoomFeed();
 console.log(props.token)
 
 const [roomFeed, setRoomFeed] = useState(true);
-        function handleSwitchRooms(evt) {
-            evt.preventDefault();
+        function handleSwitchRooms() {
             setRoomFeed(!roomFeed);
         }
     return ( 

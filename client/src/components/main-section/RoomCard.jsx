@@ -143,9 +143,7 @@ function RoomCardF(props) {
                       Remove?
                     </Label>
                   </>
-                ) : (
-                  <CardSubtitle tag="h5">{addedUsers}</CardSubtitle>
-                )}
+                ) : null}
               </CardSubtitle>
               {editModeEnabled ? (
                 <>
