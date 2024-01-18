@@ -1,4 +1,4 @@
-# React Chat Backend
+# Harmony - React Chat Backend
 
 Pair/group coding project!
 
@@ -70,7 +70,7 @@ Room document in the `rooms` collection is the following:
 - [ ] Update a message within a room endpoint
 - [ ] Delete a message within a room endpoint
 
-# React Chat Front End
+# Harmony - React Chat Front End
 
 User interface that users will be able to interact with.
 
