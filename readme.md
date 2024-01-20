@@ -1,7 +1,5 @@
 # Harmony Hotel - React Chat 
 
-Pair/group coding project!
-
 Developed by Khale and Julia.
 
 ## Stories
