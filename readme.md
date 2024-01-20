@@ -1,55 +1,8 @@
-# Harmony - React Chat Backend
+# Harmony Hotel - React Chat 
 
 Pair/group coding project!
 
-Creating a piece of full stack software: a chat application.
-
-Utilize the full MERN stack to do so: M(ongoose/MongoDB), E(xpress), R(eact), and N(ode).
-
-## Message Schema
-
-The message document in the `messages` collection is the following:
-
-```json
-
-{
-    "when": "2018-07-15T20:00:47.696Z",
-    "user": "John",
-    "room": "Main",
-    "body": "I really want to attend NASA's DEVELOP program this summer!"
-}
-
-```
-
-## User Schema
-
-The user document in the `users` collection is the following:
-
-```json
-
-{
-    "firstName": "John",
-    "lastName": "Wick",
-    "email": "jwick@puppyfinder.com",
-    "password": "focusCommitment1979"
-}
-
-```
-
-## Room Schema
-
-Room document in the `rooms` collection is the following:
-
-```json
-
-{
-    "name": "Continental",
-    "description": "No business conducted",
-    "addedUsers": ["John Wick", "Winston", "Ms. Perkins"]
-}
-
-```
-
+Developed by Khale and Julia.
 
 ## Stories
 
@@ -69,16 +22,6 @@ Room document in the `rooms` collection is the following:
 - [ ] Create a message within a room endpoint
 - [ ] Update a message within a room endpoint
 - [ ] Delete a message within a room endpoint
-
-# Harmony - React Chat Front End
-
-User interface that users will be able to interact with.
-
-## Stories
-
-### Setup
-
-Used `create-react-app` script to create a new instance of a React app within the `client` folder. Purged all unnecessary files and code. Created a `components` folder to store all of the components needed for the application.
 
 ### Auth Component
 
